@@ -64,7 +64,7 @@ export const MRT_TableFooterCell = <TData extends MRT_RowData>({
       data-column-pinned={isColumnPinned || undefined}
       data-first-right-pinned={
         (isColumnPinned === 'right' &&
-          column.getIsLastColumn(isColumnPinned)) ||
+          column.getIsFirstColumn(isColumnPinned)) ||
         undefined
       }
       data-index={renderedColumnIndex}

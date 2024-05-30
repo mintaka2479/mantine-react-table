@@ -195,7 +195,7 @@ export const MRT_TableBodyCell = <TData extends MRT_RowData>({
       data-dragging-column={isDraggingColumn || undefined}
       data-first-right-pinned={
         (isColumnPinned === 'right' &&
-          column.getIsLastColumn(isColumnPinned)) ||
+          column.getIsFirstColumn(isColumnPinned)) ||
         undefined
       }
       data-hovered-column-target={isHoveredColumn || undefined}
