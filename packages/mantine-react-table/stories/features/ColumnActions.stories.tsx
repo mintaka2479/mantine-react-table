@@ -1,4 +1,4 @@
-import { Divider, Menu } from '@mantine/core';
+import { Menu } from '@mantine/core';
 import { type MRT_ColumnDef, MantineReactTable } from '../../src';
 import { faker } from '@faker-js/faker';
 import { type Meta } from '@storybook/react';
@@ -166,7 +166,7 @@ export const CustomColumnActionsPerColumn = () => (
         renderColumnActionsMenuItems: ({ internalColumnMenuItems }) => (
           <>
             {internalColumnMenuItems}
-            <Divider />
+            <Menu.Divider />
             <Menu.Item>Item 1</Menu.Item>
             <Menu.Item>Item 2</Menu.Item>
           </>

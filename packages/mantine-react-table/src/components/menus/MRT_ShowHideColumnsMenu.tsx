@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import classes from './MRT_ShowHideColumnsMenu.module.css';
 import { useMemo, useState } from 'react';
-import { Button, Divider, Flex, Menu } from '@mantine/core';
+import { Button, Flex, Menu } from '@mantine/core';
 import { MRT_ShowHideColumnsMenuItems } from './MRT_ShowHideColumnsMenuItems';
 import {
   type MRT_Column,
@@ -113,7 +113,7 @@ export const MRT_ShowHideColumnsMenu = <TData extends MRT_RowData>({
           </Button>
         )}
       </Flex>
-      <Divider />
+      <Menu.Divider />
       {allColumns.map((column, index) => (
         <MRT_ShowHideColumnsMenuItems
           allColumns={allColumns}
