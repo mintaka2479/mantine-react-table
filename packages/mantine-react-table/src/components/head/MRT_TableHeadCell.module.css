@@ -10,8 +10,6 @@
   background-clip: padding-box;
   font-weight: bold;
   overflow: visible;
-  padding: calc(var(--mrt-table-head-cell-padding) * 1px);
-  padding-bottom: calc(var(--mrt-table-head-cell-padding) * 2 / 3 * 1px);
   position: relative;
   transition: padding 150ms ease-in-out;
   vertical-align: top;

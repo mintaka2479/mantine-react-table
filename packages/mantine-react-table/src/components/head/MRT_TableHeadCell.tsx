@@ -55,7 +55,7 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
     refs: { tableHeadCellRefs },
     setHoveredColumn,
   } = table;
-  const { columnSizingInfo, density, draggingColumn, grouping, hoveredColumn } =
+  const { columnSizingInfo, draggingColumn, grouping, hoveredColumn } =
     getState();
   const { column } = header;
   const { columnDef } = column;
@@ -165,8 +165,6 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
           isColumnPinned === 'right'
             ? `${column.getAfter(isColumnPinned)}`
             : undefined,
-        '--mrt-table-head-cell-padding':
-          density === 'xl' ? '23' : density === 'md' ? '16' : '10',
       }}
       align={
         columnDefType === 'group'
