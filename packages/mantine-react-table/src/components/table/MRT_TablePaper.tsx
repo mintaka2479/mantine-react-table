@@ -56,6 +56,8 @@ export const MRT_TablePaper = <TData extends MRT_RowData>({
         ...parseFromValuesOrFunc(tablePaperProps?.style, theme),
         ...(isFullScreen
           ? {
+              border: 0,
+              borderRadius: 0,
               bottom: 0,
               height: '100vh',
               left: 0,
