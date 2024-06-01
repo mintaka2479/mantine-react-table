@@ -3,8 +3,10 @@ import classes from './MRT_TableHeadCell.module.css';
 import {
   type CSSProperties,
   type DragEventHandler,
+  type MutableRefObject,
   type ReactNode,
   useMemo,
+  useState,
 } from 'react';
 import { Flex, TableTh, type TableThProps, useDirection } from '@mantine/core';
 import { MRT_TableHeadCellFilterContainer } from './MRT_TableHeadCellFilterContainer';
@@ -21,6 +23,7 @@ import {
 import { parseCSSVarId } from '../../utils/style.utils';
 import { parseFromValuesOrFunc } from '../../utils/utils';
 import { MRT_ColumnActionMenu } from '../menus/MRT_ColumnActionMenu';
+import { useHover } from '@mantine/hooks';
 
 interface Props<TData extends MRT_RowData> extends TableThProps {
   columnVirtualizer?: MRT_ColumnVirtualizer;
@@ -92,9 +95,21 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
   const isDraggingColumn = draggingColumn?.id === column.id;
   const isHoveredColumn = hoveredColumn?.id === column.id;
 
+  const { hovered: isHoveredHeadCell, ref: isHoveredHeadCellRef } =
+    useHover<HTMLTableCellElement>();
+
+  const [isOpenedColumnActions, setIsOpenedColumnActions] = useState(false);
+
+  const showColumns =
+    isHoveredHeadCell &&
+    !table.getVisibleFlatColumns().find((column) => column.getIsResizing());
+
+  const showCellSort = !!column.getIsSorted() || showColumns;
+
   const showColumnActions =
     (enableColumnActions || columnDef.enableColumnActions) &&
-    columnDef.enableColumnActions !== false;
+    columnDef.enableColumnActions !== false &&
+    (isOpenedColumnActions || showColumns);
 
   const showDragHandle =
     enableColumnDragging !== false &&
@@ -103,7 +118,8 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
       (enableColumnOrdering && columnDef.enableColumnOrdering !== false) ||
       (enableGrouping &&
         columnDef.enableGrouping !== false &&
-        !grouping.includes(column.id)));
+        !grouping.includes(column.id))) &&
+    showColumns;
 
   const headerPL = useMemo(() => {
     let pl = 0;
@@ -184,6 +200,9 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
       ref={(node: HTMLTableCellElement) => {
         if (node) {
           tableHeadCellRefs.current[column.id] = node;
+          (
+            isHoveredHeadCellRef as MutableRefObject<HTMLTableCellElement>
+          ).current = node;
           if (columnDefType !== 'group') {
             columnVirtualizer?.measureElement?.(node);
           }
@@ -241,7 +260,7 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
                 {column.getCanFilter() && (
                   <MRT_TableHeadCellFilterLabel header={header} table={table} />
                 )}
-                {column.getCanSort() && (
+                {column.getCanSort() && showCellSort && (
                   <MRT_TableHeadCellSortLabel header={header} table={table} />
                 )}
               </Flex>
@@ -262,7 +281,12 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
                     />
                   )}
                   {showColumnActions && (
-                    <MRT_ColumnActionMenu header={header} table={table} />
+                    <MRT_ColumnActionMenu
+                      header={header}
+                      table={table}
+                      opened={isOpenedColumnActions}
+                      onChange={setIsOpenedColumnActions}
+                    />
                   )}
                 </Flex>
               )}
