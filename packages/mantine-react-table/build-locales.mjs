@@ -95,11 +95,11 @@ export declare const MRT_Localization_${locale
         exports: {
           '.': {
             import: {
-              types: './index.d.cts',
+              types: './index.esm.d.mts',
               default: './index.esm.mjs',
             },
             require: {
-              types: './index.esm.d.mts',
+              types: './index.d.cts',
               default: './index.cjs',
             },
           },
