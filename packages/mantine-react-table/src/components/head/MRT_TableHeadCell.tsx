@@ -51,6 +51,7 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
       enableColumnOrdering,
       enableColumnPinning,
       enableGrouping,
+      enableHeaderActionsWhenHovered,
       enableMultiSort,
       layoutMode,
       mantineTableHeadCellProps,
@@ -101,8 +102,9 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
   const [isOpenedColumnActions, setIsOpenedColumnActions] = useState(false);
 
   const showColumns =
-    isHoveredHeadCell &&
-    !table.getVisibleFlatColumns().find((column) => column.getIsResizing());
+    !enableHeaderActionsWhenHovered ||
+    (isHoveredHeadCell &&
+      !table.getVisibleFlatColumns().find((column) => column.getIsResizing()));
 
   const showCellSort = !!column.getIsSorted() || showColumns;
 
