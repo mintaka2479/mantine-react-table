@@ -51,7 +51,7 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
       enableColumnOrdering,
       enableColumnPinning,
       enableGrouping,
-      enableHeaderActionsWhenHovered,
+      enableHeaderActionsHoverReveal,
       enableMultiSort,
       layoutMode,
       mantineTableHeadCellProps,
@@ -101,17 +101,15 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
 
   const [isOpenedColumnActions, setIsOpenedColumnActions] = useState(false);
 
-  const showColumns =
-    !enableHeaderActionsWhenHovered ||
+  const columnActionsEnabled =
+    (enableColumnActions || columnDef.enableColumnActions) &&
+    columnDef.enableColumnActions !== false;
+
+  const showColumnButtons =
+    !enableHeaderActionsHoverReveal ||
+    isOpenedColumnActions ||
     (isHoveredHeadCell &&
       !table.getVisibleFlatColumns().find((column) => column.getIsResizing()));
-
-  const showCellSort = !!column.getIsSorted() || showColumns;
-
-  const showColumnActions =
-    (enableColumnActions || columnDef.enableColumnActions) &&
-    columnDef.enableColumnActions !== false &&
-    (isOpenedColumnActions || showColumns);
 
   const showDragHandle =
     enableColumnDragging !== false &&
@@ -121,15 +119,15 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
       (enableGrouping &&
         columnDef.enableGrouping !== false &&
         !grouping.includes(column.id))) &&
-    showColumns;
+    showColumnButtons;
 
   const headerPL = useMemo(() => {
     let pl = 0;
     if (column.getCanSort()) pl++;
-    if (showColumnActions) pl += 1.75;
+    if (showColumnButtons) pl += 1.75;
     if (showDragHandle) pl += 1.25;
     return pl;
-  }, [showColumnActions, showDragHandle]);
+  }, [showColumnButtons, showDragHandle]);
 
   const handleDragEnter: DragEventHandler<HTMLTableCellElement> = (_e) => {
     if (enableGrouping && hoveredColumn?.id === 'drop-zone') {
@@ -259,12 +257,17 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
                 >
                   {headerElement}
                 </Flex>
-                {column.getCanFilter() && (
-                  <MRT_TableHeadCellFilterLabel header={header} table={table} />
-                )}
-                {column.getCanSort() && showCellSort && (
-                  <MRT_TableHeadCellSortLabel header={header} table={table} />
-                )}
+                {column.getCanFilter() &&
+                  (column.getIsFiltered() || showColumnButtons) && (
+                    <MRT_TableHeadCellFilterLabel
+                      header={header}
+                      table={table}
+                    />
+                  )}
+                {column.getCanSort() &&
+                  (column.getIsSorted() || showColumnButtons) && (
+                    <MRT_TableHeadCellSortLabel header={header} table={table} />
+                  )}
               </Flex>
               {columnDefType !== 'group' && (
                 <Flex
@@ -282,7 +285,7 @@ export const MRT_TableHeadCell = <TData extends MRT_RowData>({
                       }}
                     />
                   )}
-                  {showColumnActions && (
+                  {columnActionsEnabled && showColumnButtons && (
                     <MRT_ColumnActionMenu
                       header={header}
                       table={table}

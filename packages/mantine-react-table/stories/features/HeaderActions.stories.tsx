@@ -55,7 +55,33 @@ export const HeaderActionsEnabled = () => (
   <MantineReactTable
     columns={columns}
     data={data}
-    enableHeaderActionsWhenHovered
+    enableHeaderActionsHoverReveal
+  />
+);
+
+export const HeaderActionsEnabledCenterAlign = () => (
+  <MantineReactTable
+    columns={columns}
+    data={data}
+    defaultColumn={{
+      mantineTableHeadCellProps: {
+        align: 'center',
+      },
+    }}
+    enableHeaderActionsHoverReveal
+  />
+);
+
+export const HeaderActionsEnabledRightAlign = () => (
+  <MantineReactTable
+    columns={columns}
+    data={data}
+    defaultColumn={{
+      mantineTableHeadCellProps: {
+        align: 'right',
+      },
+    }}
+    enableHeaderActionsHoverReveal
   />
 );
 
@@ -75,7 +101,43 @@ export const HeaderActionsEnabledWithFeatures = () => (
   <MantineReactTable
     columns={columns}
     data={data}
-    enableHeaderActionsWhenHovered
+    enableHeaderActionsHoverReveal
+    enableColumnOrdering
+    enableColumnPinning
+    enableColumnResizing
+    enableRowNumbers
+    enableRowSelection
+  />
+);
+
+export const HeaderActionsEnabledWithFeaturesCenterAlign = () => (
+  <MantineReactTable
+    columns={columns}
+    data={data}
+    defaultColumn={{
+      mantineTableHeadCellProps: {
+        align: 'center',
+      },
+    }}
+    enableHeaderActionsHoverReveal
+    enableColumnOrdering
+    enableColumnPinning
+    enableColumnResizing
+    enableRowNumbers
+    enableRowSelection
+  />
+);
+
+export const HeaderActionsEnabledWithFeaturesRightAlign = () => (
+  <MantineReactTable
+    columns={columns}
+    data={data}
+    defaultColumn={{
+      mantineTableHeadCellProps: {
+        align: 'right',
+      },
+    }}
+    enableHeaderActionsHoverReveal
     enableColumnOrdering
     enableColumnPinning
     enableColumnResizing
